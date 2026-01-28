@@ -18,7 +18,7 @@ class ProviderConfig(BaseModel):
 
 class PipelineConfig(BaseModel):
     dry_run: bool = False
-    backup: bool = True
+    # backup 字段已移除，统一由 SafetyConfig 控制
 
 class SafetyConfig(BaseModel):
     enable_backup: bool = True
@@ -80,7 +80,10 @@ def load_config(config_path: str = "config.yaml") -> AppConfig:
             # 预处理：替换环境变量
             expanded_config = expand_env_vars(raw_config)
 
-            return AppConfig(**expanded_config)
+            config = AppConfig(**expanded_config)
+            # 确保 vault_path 是绝对路径
+            config.vault_path = config.vault_path.resolve()
+            return config
         except yaml.YAMLError as e:
             raise ValueError(f"配置文件 YAML 格式错误: {e}")
         except ValidationError as e:

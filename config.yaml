@@ -56,11 +56,10 @@ embedding:
 # 流程与安全
 # ---------------------------------------------------------
 pipeline:
-  dry_run: true
-  backup: true
+  dry_run: true # 模拟模式，用于测试，所有更改不会被写入文件，而是打印在控制台上
 
 safety:
-  enable_backup: true
+  enable_backup: true # 修改前是否备份文件 (强烈建议开启)
   backup_retention_days: 7
   backup_path: "./.auto_link_backups"
 
