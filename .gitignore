@@ -55,3 +55,7 @@ tags.json
 # PRD File
 PRD_PYTHON_EN.md
 PRD_PYTHON_ZH.md
+PRD.md
+
+# last run
+.last_run/
