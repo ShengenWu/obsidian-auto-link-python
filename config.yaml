@@ -6,16 +6,30 @@ vault_path: "./my_test_vault"
 # ---------------------------------------------------------
 # LLM 服务商配置 (多账号管理)
 # ---------------------------------------------------------
-# 当前激活的服务商名称 (必须对应下方 providers 中的 key)
-active_provider: "local-api"
+# 当前Tagging功能和Linking功能使用的服务商名称 (必须对应下方 providers 中的 key)
+active_provider: "aihubmix-router"
 
 providers:
   # 示例 1: DeepSeek (OpenAI 兼容协议)
-  local-api:
+  aihubmix-router:
+    provider_type: "openai_compatible" # 对应 OpenAI 客户端
+    base_url: "https://aihubmix.com/v1"
+    api_key: "${AIHUBMIX_API_KEY}" # 支持从环境变量读取
+    model: "aihubmix-router"
+    temperature: 0.3
+
+  local-gemini3-flash-api:
     provider_type: "openai_compatible" # 对应 OpenAI 客户端
     base_url: "http://127.0.0.1:8045/v1"
     api_key: "${LOCAL_API_KEY}" # 支持从环境变量读取
     model: "gemini-3-flash"
+    temperature: 0.3
+
+  local-gemini3-pro-api:
+    provider_type: "openai_compatible" # 对应 OpenAI 客户端
+    base_url: "http://127.0.0.1:8045/v1"
+    api_key: "${LOCAL_API_KEY}" # 支持从环境变量读取
+    model: "gemini-3-pro-low"
     temperature: 0.3
 
   # 示例 2: OpenAI 官方
@@ -51,6 +65,22 @@ prompt_file: "prompts.yaml"
 embedding:
   type: "local" # "local" or "api"
   model_name: "BAAI/bge-large-zh-v1.5"
+
+# ---------------------------------------------------------
+# 摘要策略配置 (Summarization)
+# ---------------------------------------------------------
+summarization:
+  enable: true
+  # 独立指定摘要用的模型服务商 (必须在 providers 中定义)
+  # 如果留空，则默认使用 active_provider (主模型)
+  # 建议：使用便宜、快速的模型 (如 gemini-flash, gpt-3.5-turbo)
+  provider: "aihubmix-router"
+  # 超过多少字符触发处理 (摘要或截断)
+  threshold: 1000
+  # 开启摘要时：喂给摘要模型的最大字符数 (建议设大一点，如 6000)
+  max_input_length: 6000
+  # 关闭摘要时：直接截断的长度 (建议设小一点，如 2000，节省主模型 Token)
+  hard_truncate_length: 2000
 
 # ---------------------------------------------------------
 # 流程与安全

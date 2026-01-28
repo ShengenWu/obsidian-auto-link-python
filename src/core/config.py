@@ -30,6 +30,13 @@ class ReportingConfig(BaseModel):
     log_folder: str = "System/Auto-Link-Logs"
     summary_template: Literal["markdown", "json"] = "markdown"
 
+class SummarizationConfig(BaseModel):
+    enable: bool = True
+    provider: Optional[str] = None # 如果为 None，使用 active_provider
+    threshold: int = 1000 # 超过此长度触发处理
+    max_input_length: int = 6000 # 开启摘要时：喂给摘要模型的最大文本长度
+    hard_truncate_length: int = 2000 # 关闭摘要时：直接截断的长度 (作为上下文喂给主模型)
+
 class AppConfig(BaseModel):
     vault_path: Path
     active_provider: str
@@ -37,6 +44,7 @@ class AppConfig(BaseModel):
     prompt_file: str = "prompts.yaml"
 
     embedding: EmbeddingConfig
+    summarization: SummarizationConfig = Field(default_factory=SummarizationConfig)
     pipeline: PipelineConfig = Field(default_factory=PipelineConfig)
     safety: SafetyConfig = Field(default_factory=SafetyConfig)
     reporting: ReportingConfig = Field(default_factory=ReportingConfig)

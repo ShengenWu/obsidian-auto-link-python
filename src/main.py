@@ -235,6 +235,8 @@ def update(
 
     console.print(f"[green]发现 {len(changed_files)} 个变更文件[/green]")
 
+    failed_count = 0
+
     for file_path in changed_files:
         try:
             rel_path = file_path.relative_to(cfg.vault_path)
@@ -272,6 +274,7 @@ def update(
 
             except Exception as e:
                 console.print(f"[yellow]文件解析警告: {e}，跳过处理[/yellow]")
+                failed_count += 1
                 continue
 
             if not content.strip():
@@ -331,11 +334,16 @@ def update(
 
         except Exception as e:
             console.print(f"[red]处理文件 {file_path.name} 出错: {e}[/red]")
+            failed_count += 1
             # 打印完整的错误栈以便调试
             # import traceback; traceback.print_exc()
 
     if not cfg.pipeline.dry_run:
-        save_last_run_time()
+        if failed_count == 0:
+            save_last_run_time()
+            console.print("[bold green]✔ 所有文件处理成功，已更新运行时间戳。[/bold green]")
+        else:
+            console.print(f"[yellow]⚠ 有 {failed_count} 个文件处理失败，未更新时间戳。下次运行时将重试。[/yellow]")
 
     console.print("[bold green]✔ 更新完成！[/bold green]")
 

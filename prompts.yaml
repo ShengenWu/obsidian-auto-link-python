@@ -39,3 +39,12 @@ linking:
 
     当前笔记内容：
     {current_content}
+
+summarize:
+  description: "用于长文档的摘要生成"
+  template: |
+    请阅读以下笔记内容，并生成一个精炼的摘要（100-200字）。
+    摘要应包含笔记的核心观点、主要结论或关键信息，以便于判断其与其他笔记的关联性。
+
+    笔记内容：
+    {content}
