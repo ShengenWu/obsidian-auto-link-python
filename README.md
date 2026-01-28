@@ -16,6 +16,7 @@
     - [3. 初始化与运行](#3-初始化与运行)
   - [标签管理系统](#标签管理系统)
   - [高级配置](#高级配置)
+  - [下一步计划](#下一步计划)
 - [English Documentation](#english-documentation)
   - [✨ Core Features](#-core-features)
   - [Quick Start](#quick-start)
@@ -114,6 +115,10 @@ python -m src.main blacklist add "todo" # 拉黑 "todo"，防止 AI 生成它
     # 恢复今天被 AI 修改过的所有文件
     python -m src.main restore --date 2024-01-27
     ```
+
+## 下一步计划
+
+- 新增Report功能，每次执行完成任务后生成任务摘要。 
 
 ---
 
