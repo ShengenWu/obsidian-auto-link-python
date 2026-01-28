@@ -8,7 +8,7 @@
 
 - [Obsidian Auto-Link Core (Python Edition)](#obsidian-auto-link-core-python-edition)
   - [📖 目录 / Table of Contents](#-目录--table-of-contents)
-- [🇨🇳 中文说明](#-中文说明)
+- [中文说明](#中文说明)
   - [✨ 核心特性](#-核心特性)
   - [快速开始](#快速开始)
     - [1. 安装](#1-安装)
@@ -16,7 +16,7 @@
     - [3. 初始化与运行](#3-初始化与运行)
   - [标签管理系统](#标签管理系统)
   - [高级配置](#高级配置)
-- [🇺🇸 English Documentation](#-english-documentation)
+- [English Documentation](#english-documentation)
   - [✨ Core Features](#-core-features)
   - [Quick Start](#quick-start)
     - [1. Installation](#1-installation)
@@ -27,7 +27,7 @@
 
 ---
 
-# 🇨🇳 中文说明
+# 中文说明
 
 ## ✨ 核心特性
 
@@ -117,7 +117,7 @@ python -m src.main blacklist add "todo" # 拉黑 "todo"，防止 AI 生成它
 
 ---
 
-# 🇺🇸 English Documentation
+# English Documentation
 
 **Obsidian Auto-Link Core** is a "Fully Automated Knowledge Base Gardener" designed for geeks and developers. It follows a "Set and Forget" philosophy, running silently in the background to automatically organize your Obsidian vault daily using local LLMs or APIs.
 
