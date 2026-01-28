@@ -300,6 +300,9 @@ def update(
             # 4. LLM Linking
             # 先检索
             related_docs_raw = vector_mgr.search(content, k=3)
+            # [调试] 打印检索到的原始结果
+            console.print(f"[debug] 原始检索结果: {[doc.metadata.get('source') for doc, score in related_docs_raw]}")
+
             related_docs = []
             for doc, score in related_docs_raw:
                 if doc.metadata.get("source") == file_path.name:
@@ -311,7 +314,7 @@ def update(
                 })
 
             if related_docs:
-                console.print(f"  🔍 检索到 {len(related_docs)} 篇相关笔记")
+                console.print(f"  🔍 检索到 {len(related_docs)} 篇相关笔记: {[d['source'] for d in related_docs]}")
                 insight = llm_client.generate_insight(file_path.stem, content, related_docs)
                 if insight:
                     console.print(Panel(insight, title="生成的关联见解", border_style="magenta"))

@@ -56,14 +56,29 @@ class VectorStoreManager:
         )
 
     def add_texts(self, texts: List[str], metadatas: List[Dict[str, Any]]):
-        """添加文本到向量库"""
+        """添加文本到向量库 (先删后加，防止重复)"""
         if not texts:
             return
 
-        # 批量添加
+        # 1. 清理旧数据
+        # 提取所有涉及到 source 文件名
+        sources_to_delete = list(set([m.get("source") for m in metadatas if m.get("source")]))
+
+        if sources_to_delete:
+            try:
+                # 使用 where 过滤器删除旧记录
+                # Chroma 的 filter 语法: where={"source": {"$in": sources_to_delete}}
+                # 但 delete 方法通常接受 ids 或 where
+                # 逐个删除比较稳妥，防止过滤器语法兼容性问题
+                for source in sources_to_delete:
+                    self.db.delete(where={"source": source})
+                    # console.print(f"[dim]已清理旧向量: {source}[/dim]")
+            except Exception as e:
+                console.print(f"[yellow]清理旧向量失败 (可能是首次运行): {e}[/yellow]")
+
+        # 2. 存入新数据
         console.print(f"正在存入 {len(texts)} 条向量数据...")
         self.db.add_texts(texts=texts, metadatas=metadatas)
-        # Chroma v0.4+ 会自动持久化，无需调用 persist()
 
     def search(self, query: str, k: int = 3) -> List[Tuple[Document, float]]:
         """相似度搜索"""
